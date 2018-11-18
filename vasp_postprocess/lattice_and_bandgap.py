@@ -28,10 +28,9 @@ def parse_cmdline(argv):
 
     # initialize the parser object:
     parser = argparse.ArgumentParser()
-    # parser.add_argument("-i", "--input_rates", help="The location of the input rates file",
-    #                     default=DEF_IRATE_FILE, type=read_input_rates)
-    parser.add_argument("-n", "--no_attribution", help="Whether to include attribution",
-                        action='store_false')
+    parser.add_argument("-s", "--structural", help="Calculate structural properties (lattice parameters and angles)")
+    parser.add_argument("-e", "--electronic", help="Calculate electronic properties (band gap, VBM, CBM, etc.)")
+    parser.add_argument("-a", "--all", help="Calculate both structural and electronic properties")
     args = None
     try:
         args = parser.parse_args(argv)
