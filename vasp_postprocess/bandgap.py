@@ -1,10 +1,8 @@
 #!/usr/bin/env python
 import numpy as np
-import os
 from fractions import Fraction
 
 # Setup
-direct = os.path.basename(os.getcwd())
 with open('EIGENVAL','r') as eg:
     lines = eg.readlines()
 
@@ -78,7 +76,7 @@ vbm_true_location = kpoints[avg_vbm.index(vbm_true_max)]
 cbm_location = kpoints[cbm.index(cbm_min)]
 
 # Output to text file (comma separated)
-data = [direct, vbm_max, vbm_location, vbm_true_1, vbm_true_2, vbm_true_3, vbm_true_max, vbm_true_location, cbm_min, 
+data = [vbm_max, vbm_location, vbm_true_1, vbm_true_2, vbm_true_3, vbm_true_max, vbm_true_location, cbm_min,
         cbm_location, gap, true_gap]
 data = map(str,data)
 data = ', '.join(data)
