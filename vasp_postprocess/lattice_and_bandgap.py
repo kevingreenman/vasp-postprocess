@@ -18,13 +18,6 @@ from common import (warning, ArgumentParserError, GOOD_RET, INPUT_ERROR, IO_ERRO
 __author__ = 'kpgreenm'
 
 
-# Constants #
-
-# Defaults
-# DEF_CONTCAR = None
-# DEF_EIGENVAL = None
-
-
 def parse_cmdline(argv):
     """
     Returns the parsed argument list and return code.
