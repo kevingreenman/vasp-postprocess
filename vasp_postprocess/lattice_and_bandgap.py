@@ -1,3 +1,5 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
 """
 lattice_and_bandgap.py
 Processes the output files from VASP to gather important data on structural and electronic properties
@@ -11,11 +13,16 @@ from itertools import islice
 import numpy as np
 import math
 from fractions import Fraction
+from common import (warning, ArgumentParserError, GOOD_RET, INPUT_ERROR, IO_ERROR)
+
+__author__ = 'kpgreenm'
 
 
-def warning(*objs):
-    """Writes a message to stderr."""
-    print("WARNING: ", *objs, file=sys.stderr)
+# Constants #
+
+# Defaults
+# DEF_CONTCAR = None
+# DEF_EIGENVAL = None
 
 
 def parse_cmdline(argv):
@@ -28,28 +35,35 @@ def parse_cmdline(argv):
 
     # initialize the parser object:
     parser = argparse.ArgumentParser()
-    parser.add_argument("-s", "--structural", help="Calculate structural properties (lattice parameters and angles)")
-    parser.add_argument("-e", "--electronic", help="Calculate electronic properties (band gap, VBM, CBM, etc.)")
-    parser.add_argument("-a", "--all", help="Calculate both structural and electronic properties")
+    parser.add_argument("-s", "--structural", help="Calculate structural properties (lattice parameters and angles)",
+                        action='store_true')
+    parser.add_argument("-e", "--electronic", help="Calculate electronic properties (band gap, VBM, CBM, etc.)",
+                        action='store_true')
+    parser.add_argument("-a", "--all", help="Calculate both structural and electronic properties", action='store_true')
     args = None
     try:
         args = parser.parse_args(argv)
-    except IOError as e:
-        warning("Problems reading file:", e)
+    except ArgumentParserError as e:
+        warning("Argument Parser Error:", e)
         parser.print_help()
-        return args, 2
+        return args, INPUT_ERROR
 
-    return args, 0
+    return args, GOOD_RET
 
 
 def unitcell():
-    with open('CONTCAR') as lines:
-        d = np.genfromtxt(islice(lines, 2, 5))
+    # Setup
+    try:
+        with open('./data/CONTCAR') as lines:
+            d = np.genfromtxt(islice(lines, 2, 5))
+    except FileNotFoundError as e:
+        warning("CONTCAR file not found:", e)
+        return IO_ERROR
 
+    # Calculate lattice parameters and angles
     a = np.linalg.norm(d[0])
     b = np.linalg.norm(d[1])
     c = np.linalg.norm(d[2])
-
     alpha = math.acos((np.dot(d[1], d[2]) / (b * c))) * (180 / math.pi)
     beta = math.acos((np.dot(d[0], d[2]) / (a * c))) * (180 / math.pi)
     gamma = math.acos((np.dot(d[0], d[1]) / (a * b))) * (180 / math.pi)
@@ -64,8 +78,12 @@ def unitcell():
 
 def bandgap():
     # Setup
-    with open('EIGENVAL', 'r') as eg:
-        lines = eg.readlines()
+    try:
+        with open('./data/EIGENVAL', 'r') as eg:
+            lines = eg.readlines()
+    except FileNotFoundError as e:
+        warning("EIGENVAL file not found:", e)
+        return IO_ERROR
 
     # Find nbands
     band_low = 1
@@ -147,9 +165,18 @@ def bandgap():
 
 def main(argv=None):
     args, ret = parse_cmdline(argv)
-    if ret != 0:
+    if ret != GOOD_RET:
         return ret
-    return 0  # success
+
+    if args.structural is True:
+        unitcell()
+    elif args.electronic is True:
+        bandgap()
+    elif args.all is True:
+        unitcell()
+        bandgap()
+
+    return GOOD_RET  # success
 
 
 if __name__ == "__main__":
