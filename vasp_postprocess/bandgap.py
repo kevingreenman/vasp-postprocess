@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-#bandgap.py v1.0 08-16-2018 Kevin Greenman kpgreenm@umich.edu
 import numpy as np
 import os
 from fractions import Fraction
@@ -77,25 +76,6 @@ vbm_true_3 = vbm3[avg_vbm.index(vbm_true_max)]
 vbm_location = kpoints[vbm1.index(vbm_max)]
 vbm_true_location = kpoints[avg_vbm.index(vbm_true_max)]
 cbm_location = kpoints[cbm.index(cbm_min)]
-
-## Print outputs
-#print 'Directory: ' + direct
-#print ''
-#print 'VBM: ' + str(vbm_max) + ' eV'
-#print 'VBM location: ' + str(vbm_location)
-#print ''
-#print '1st Band at VBM: ' + str(vbm_true_1) + ' eV'
-#print '2nd Band at VBM: ' + str(vbm_true_2) + ' eV'
-#print '3rd Band at VBM: ' + str(vbm_true_3) + ' eV'
-#print ''
-#print 'True VBM (top 3 averaged): ' + str(vbm_true_max)  + ' eV'
-#print 'True VBM location: ' + str(vbm_true_location)
-#print ''
-#print 'CBM: ' + str(cbm_min) + ' eV'
-#print 'CBM location: ' + str(cbm_location)
-#print ''
-#print 'Band Gap: ' + str(gap) + ' eV'
-#print 'True Band Gap: ' + str(true_gap)  + ' eV'
 
 # Output to text file (comma separated)
 data = [direct, vbm_max, vbm_location, vbm_true_1, vbm_true_2, vbm_true_3, vbm_true_max, vbm_true_location, cbm_min, 
