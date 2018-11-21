@@ -21,7 +21,7 @@ DATA_DIR = os.path.join(os.path.dirname(__file__), './data')
 
 
 # class TestNoOutput(unittest.TestCase):
-    # TODO: Make EIGENVAL and CONTCAR inputs to main
+    # TODO: Change name of EIGENVAL and CONTCAR, test, and turn back
     # def testMissingFile(self):
     #     test_input = ["ghost.txt", "-e", ".txt"]
     #     if logger.isEnabledFor(logging.DEBUG):
@@ -39,12 +39,20 @@ class TestExpectedOutput(unittest.TestCase):
         finally:
             silent_remove('unitcell.txt')
 
-    def testElectronic(self):
+    def testElectronic224Bands(self):
         try:
             main(['-e'])
             self.assertFalse(diff_lines('bandgap.txt', './tests/bandgap_correct.txt'))
         finally:
             silent_remove('bandgap.txt')
+
+    # def testElectronic320Bands(self):
+    # TODO: Make this work
+    #     try:
+    #         main(['-e'])
+    #         self.assertFalse(diff_lines('bandgap.txt', './tests/bandgap_correct.txt'))
+    #     finally:
+    #         silent_remove('bandgap.txt')
 
     def testStructuralAndElectronic(self):
         try:

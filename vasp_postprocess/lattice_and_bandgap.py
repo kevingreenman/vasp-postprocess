@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
 lattice_and_bandgap.py
@@ -63,7 +63,7 @@ def unitcell():
 
     # Output to text file (comma separated)
     data = [a, b, c, alpha, beta, gamma]
-    data = map(str, data)
+    data = list(map(str, data))
     data = ', '.join(data)
     with open('unitcell.txt', 'w') as uc:
         uc.write(data)
@@ -109,7 +109,7 @@ def bandgap():
                 break
     cbm_lines = np.array(cbm_lines)
     cbm = [lines[i].split()[1] for i in cbm_lines]
-    cbm = map(float, cbm)
+    cbm = list(map(float, cbm))
 
     # VBM
     vbm1_lines = cbm_lines - 1
@@ -122,9 +122,9 @@ def bandgap():
         vbm1.append(lines[vbm1_lines[i]].split()[1])
         vbm2.append(lines[vbm2_lines[i]].split()[1])
         vbm3.append(lines[vbm3_lines[i]].split()[1])
-    vbm1 = map(float, vbm1)
-    vbm2 = map(float, vbm2)
-    vbm3 = map(float, vbm3)
+    vbm1 = list(map(float, vbm1))
+    vbm2 = list(map(float, vbm2))
+    vbm3 = list(map(float, vbm3))
 
     # VBM Average
     avg_vbm = []
@@ -150,7 +150,7 @@ def bandgap():
     # Output to text file (comma separated)
     data = [vbm_max, vbm_location, vbm_true_1, vbm_true_2, vbm_true_3, vbm_true_max, vbm_true_location, cbm_min,
             cbm_location, gap, true_gap]
-    data = map(str, data)
+    data = list(map(str, data))
     data = ', '.join(data)
     with open('bandgap.txt', 'w') as bg:
         bg.write(data)
